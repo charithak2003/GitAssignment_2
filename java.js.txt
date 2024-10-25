@@ -1,0 +1,59 @@
+// Function to add a new task with the current date
+function addTask() {
+    const taskInput = document.getElementById('task-input');
+    const taskText = taskInput.value;
+
+    if (taskText.trim() === '') {
+        alert("Please enter a task.");
+        return;
+    }
+
+    const taskList = document.getElementById('task-list');
+
+    // Create new task list item
+    const taskItem = document.createElement('li');
+    
+    // Get the current date
+    const currentDate = new Date();
+    const dateString = currentDate.toLocaleDateString() + " " + currentDate.toLocaleTimeString();
+
+    // Create a text node for task and date
+    taskItem.textContent = `${taskText} (Created on: ${dateString})`;
+
+    // Add Edit and Delete buttons
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Edit';
+    editButton.classList.add('edit');
+    editButton.onclick = function () { editTask(taskItem); };
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.classList.add('delete');
+    deleteButton.onclick = function () { deleteTask(taskItem); };
+
+    // Append buttons to task item
+    taskItem.appendChild(editButton);
+    taskItem.appendChild(deleteButton);
+
+    // Add task item to the task list
+    taskList.appendChild(taskItem);
+
+    // Clear the input field
+    taskInput.value = '';
+}
+
+// Function to delete a task
+function deleteTask(taskItem) {
+    const taskList = document.getElementById('task-list');
+    taskList.removeChild(taskItem);
+}
+
+// Function to edit a task
+function editTask(taskItem) {
+    const newTaskText = prompt("Edit your task:", taskItem.firstChild.nodeValue);
+    if (newTaskText && newTaskText.trim() !== '') {
+        const currentDate = new Date();
+        const dateString = currentDate.toLocaleDateString() + " " + currentDate.toLocaleTimeString();
+        taskItem.firstChild.nodeValue = `${newTaskText} (Created on: ${dateString})`;
+    }
+}
